@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Text, TextInput, View } from 'react-native'
+import { View, Button, TextInput } from 'react-native'
 
 import firebase from 'firebase'
 
@@ -17,12 +17,18 @@ export class Register extends Component {
     }
 
     onSignUp() {
-        const { email, password, name } = this.state
+        const { email, password, name } = this.state;
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((result) => {
+                firebase.firestore().collection("users")
+                    .doc(firebase.auth().currentUser.uid)
+                    .set({
+                        name,
+                        email
+                    })
                 console.log(result)
             })
-            .then((error) => {
+            .catch((error) => {
                 console.log(error)
             })
     }
@@ -40,7 +46,6 @@ export class Register extends Component {
                 />
                 <TextInput
                     placeholder="password"
-                    // 비밀번호 설정시 secureTextEntry 설정.
                     secureTextEntry={true}
                     onChangeText={(password) => this.setState({ password })}
                 />

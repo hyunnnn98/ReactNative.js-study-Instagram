@@ -4,6 +4,12 @@ import { View, Text } from 'react-native';
 
 import * as firebase from 'firebase'
 
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from './redux/reducers'
+import thunk from 'redux-thunk'
+const store = createStore(rootReducer, applyMiddleware(thunk))
+
 const firebaseConfig = {
   apiKey: "AIzaSyBSGU0lGm7hLbCDdWACueMG5eOwblfn5Rw",
   authDomain: "instagram-dev-15b09.firebaseapp.com",
@@ -23,6 +29,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import LandingScreen from './components/auth/Landing'
 import RegisterScreen from './components/auth/Register'
+import LoginScreen from './components/auth/Login'
+import MainScreen from './components/Main'
 
 const Stack = createStackNavigator()
 
@@ -31,6 +39,7 @@ export class App extends Component {
     super(props)
     this.state = {
       loaded: false,
+      loggedIn: false
     }
   }
 
@@ -65,16 +74,18 @@ export class App extends Component {
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Landing">
             <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       );
     }
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Text>User is logged in</Text>
-      </View>
+      // Redux 에 접근하기 위해서는 최상위 부모 컴포넌트에 react-redux 에서 제공해주는 컴포넌트로 감싸야 함.
+      <Provider store={store}>
+        <MainScreen />
+      </Provider>
     )
   }
 }

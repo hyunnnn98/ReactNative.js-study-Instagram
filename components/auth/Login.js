@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { Button, Text, TextInput, View } from 'react-native'
+import { View, Button, TextInput } from 'react-native'
 
 import firebase from 'firebase'
 
-export class Lgoin extends Component {
+export class Login extends Component {
     constructor(props) {
         super(props);
 
@@ -16,12 +16,12 @@ export class Lgoin extends Component {
     }
 
     onSignUp() {
-        const { email, password } = this.state
+        const { email, password } = this.state;
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((result) => {
                 console.log(result)
             })
-            .then((error) => {
+            .catch((error) => {
                 console.log(error)
             })
     }
@@ -35,7 +35,6 @@ export class Lgoin extends Component {
                 />
                 <TextInput
                     placeholder="password"
-                    // 비밀번호 설정시 secureTextEntry 설정.
                     secureTextEntry={true}
                     onChangeText={(password) => this.setState({ password })}
                 />
