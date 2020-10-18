@@ -31,6 +31,7 @@ import LandingScreen from './components/auth/Landing'
 import RegisterScreen from './components/auth/Register'
 import LoginScreen from './components/auth/Login'
 import MainScreen from './components/Main'
+import AddScreen from './components/Main/Add'
 
 const Stack = createStackNavigator()
 
@@ -83,8 +84,14 @@ export class App extends Component {
 
     return (
       // Redux 에 접근하기 위해서는 최상위 부모 컴포넌트에 react-redux 에서 제공해주는 컴포넌트로 감싸야 함.
+      // 하단 Navigator 에도 Stack 로 감싸는 이유는 페이지 이동마다 리다이렉션을 막아주기 위해 적용.
       <Provider store={store}>
-        <MainScreen />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Main">
+            <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Add" component={AddScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </Provider>
     )
   }
