@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+
+import { View, Text } from 'react-native'
 
 import * as firebase from 'firebase'
 
@@ -24,23 +25,23 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig)
 }
 
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import LandingScreen from './components/auth/Landing'
 import RegisterScreen from './components/auth/Register'
 import LoginScreen from './components/auth/Login'
 import MainScreen from './components/Main'
-import AddScreen from './components/Main/Add'
+import AddScreen from './components/main/Add'
+import SaveScreen from './components/main/Save'
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 export class App extends Component {
   constructor(props) {
-    super(props)
+    super()
     this.state = {
       loaded: false,
-      loggedIn: false
     }
   }
 
@@ -59,7 +60,6 @@ export class App extends Component {
       }
     })
   }
-
   render() {
     const { loggedIn, loaded } = this.state;
     if (!loaded) {
@@ -86,10 +86,12 @@ export class App extends Component {
       // Redux 에 접근하기 위해서는 최상위 부모 컴포넌트에 react-redux 에서 제공해주는 컴포넌트로 감싸야 함.
       // 하단 Navigator 에도 Stack 로 감싸는 이유는 페이지 이동마다 리다이렉션을 막아주기 위해 적용.
       <Provider store={store}>
-        <NavigationContainer>
+        <NavigationContainer >
           <Stack.Navigator initialRouteName="Main">
-            <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Add" component={AddScreen} />
+            <Stack.Screen name="Main" component={MainScreen} />
+            {/* 유기적으로 Screnn 간의 데이터 props 이동을 위해 navigation 객체를 하위 컴포넌트로 넘겨준다. */}
+            <Stack.Screen name="Add" component={AddScreen} navigation={this.props.navigation} />
+            <Stack.Screen name="Save" component={SaveScreen} navigation={this.props.navigation} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
