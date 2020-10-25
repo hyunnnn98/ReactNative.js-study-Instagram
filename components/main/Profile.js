@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, Image, FlatList, Button } from 'react-native'
 
 import firebase from 'firebase'
 require('firebase/firestore')
+
+// redux 로 부터 데이터 가져오기.
 import { connect } from 'react-redux'
 
 function Profile(props) {
@@ -11,8 +13,12 @@ function Profile(props) {
     const [following, setFollowing] = useState(false)
 
     useEffect(() => {
+        // currentUser, posts 는 redux-reducer 로 부터 가져오는 데이터이다.
         const { currentUser, posts } = props;
 
+        // [예외처리]
+        // 이전 컴포넌트로 부터 받은 uid 와 현재 로그인 되어 있는 uid 와 비교 후 
+        // reducer 로 부터 가져온 데이터를 setXxx 바인딩 해준다.
         if (props.route.params.uid === firebase.auth().currentUser.uid) {
             setUser(currentUser)
             setUserPosts(posts)
@@ -100,7 +106,7 @@ function Profile(props) {
 
             <View style={styles.containerGallery}>
                 <FlatList
-                    numColumns={3}
+                    numColumns={4}
                     horizontal={false}
                     data={userPosts}
                     renderItem={({ item }) => (
@@ -112,9 +118,7 @@ function Profile(props) {
                                 source={{ uri: item.downloadURL }}
                             />
                         </View>
-
                     )}
-
                 />
             </View>
         </View>
@@ -133,17 +137,20 @@ const styles = StyleSheet.create({
         flex: 1
     },
     containerImage: {
-        flex: 1 / 3
-
+        flex: 1 / 4
     },
     image: {
         flex: 1,
+        // 이미지 비율
         aspectRatio: 1 / 1
     }
 })
+
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser,
     posts: store.userState.posts,
     following: store.userState.following
 })
+
+// 위에서 정의한 props를 H.O.C 방식으로 Profile 컴포넌트에 넘겨준다..
 export default connect(mapStateToProps, null)(Profile);

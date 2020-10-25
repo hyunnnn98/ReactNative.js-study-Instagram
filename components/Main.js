@@ -69,6 +69,7 @@ export class Main extends Component {
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
+// Hoc 방식으로 reudx로 선언한 actions 를 props 로 넘겨준 후 필요 로직에 따라 실행하는 타입으로 진행.. 
 const mapDispatchProps = (dispatch) => bindActionCreators({ fetchUser, fetchUserPosts, fetchUserFollowing }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);

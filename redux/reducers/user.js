@@ -7,6 +7,7 @@ const initialState = {
 }
 
 export const user = (state = initialState, action) => {
+    // switch 구문으로 작업할 시 반드시 default 로 현재의 state 를 리턴해야 한다.
     switch (action.type) {
         case USER_STATE_CHANGE:
             return {
