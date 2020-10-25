@@ -23,6 +23,8 @@ function Profile(props) {
             setUser(currentUser)
             setUserPosts(posts)
         }
+        // 정보가 일치하지 않음 == 검색 페이지로부터 넘어올때 => nativation로 부터 데이터를 넘겨 받았기 때문에
+        // props.route.params 안에있는 uid 를 가져 온 후 데이터 바인딩.
         else {
             firebase.firestore()
                 .collection("users")
@@ -77,9 +79,11 @@ function Profile(props) {
             .delete()
     }
 
+    // 렌더링 대기 상황 중 user 정보가 없을 경우 페이지가 뻗는걸 대비해서 예외처리 작업을 해주자. 
     if (user === null) {
         return <View />
     }
+    
     return (
         <View style={styles.container}>
             <View style={styles.containerInfo}>
@@ -88,12 +92,13 @@ function Profile(props) {
 
                 {props.route.params.uid !== firebase.auth().currentUser.uid ? (
                     <View>
-                        {following ? (
-                            <Button
-                                title="Following"
-                                onPress={() => onUnfollow()}
-                            />
-                        ) :
+                        {following ?
+                            (
+                                <Button
+                                    title="Following"
+                                    onPress={() => onUnfollow()}
+                                />
+                            ) :
                             (
                                 <Button
                                     title="Follow"

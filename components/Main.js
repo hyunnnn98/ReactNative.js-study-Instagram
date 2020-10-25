@@ -24,7 +24,13 @@ export class Main extends Component {
     }
     render() {
         return (
-            <Tab.Navigator initialRouteName="Feed" labeled={false}>
+            <Tab.Navigator
+                initialRouteName="Feed"
+                labeled={false}
+                activeColor="black"
+                inactiveColor="pink"
+                barStyle={{ backgroundColor: '#694fad' }}
+            >
                 <Tab.Screen name="Feed" component={FeedScreen}
                     options={{
                         tabBarIcon: ({ color, size }) => (
@@ -38,6 +44,7 @@ export class Main extends Component {
                         ),
                     }} />
                 <Tab.Screen name="AddContainer" component={EmptyScreen}
+                    // listeners 를 통해 실행되는 작업을 명확하게 서술.
                     listeners={({ navigation }) => ({
                         tabPress: event => {
                             event.preventDefault();
