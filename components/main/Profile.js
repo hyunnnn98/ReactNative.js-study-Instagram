@@ -18,6 +18,7 @@ function Profile(props) {
 
         // [예외처리]
         // 이전 컴포넌트로 부터 받은 uid 와 현재 로그인 되어 있는 uid 와 비교 후 
+        // => navigation.navigate("Profile", { uid: firebase.auth().currentUser.uid })
         // reducer 로 부터 가져온 데이터를 setXxx 바인딩 해준다.
         if (props.route.params.uid === firebase.auth().currentUser.uid) {
             setUser(currentUser)
@@ -54,11 +55,15 @@ function Profile(props) {
                 })
         }
 
-        if (props.following.indexOf(props.route.params.uid) > -1) {
-            setFollowing(true);
-        } else {
+        // indexOf 를 사용하여 팔로워 Index 목록에 포함되어있는지 확인.
+        // if (props.following.indexOf(props.route.params.uid) > -1) {
+        //     setFollowing(true);
+        // } else {
+        //     setFollowing(false);
+        // }
+        (props.following.indexOf(props.route.params.uid) > -1) ?
+            setFollowing(true) :
             setFollowing(false);
-        }
 
     }, [props.route.params.uid, props.following])
 
@@ -83,7 +88,7 @@ function Profile(props) {
     if (user === null) {
         return <View />
     }
-    
+
     return (
         <View style={styles.container}>
             <View style={styles.containerInfo}>
@@ -151,6 +156,7 @@ const styles = StyleSheet.create({
     }
 })
 
+// redux-store 로 부터 데이터 로딩.
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser,
     posts: store.userState.posts,

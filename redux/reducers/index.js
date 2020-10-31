@@ -2,9 +2,12 @@
 
 import { combineReducers } from 'redux'
 import { user } from './user'
+import { users } from './users'
 
+// 여기서 store.Xxx 로 넘겨주는 최종 루트가 결정된다.
 const Reducers = combineReducers({
-    userState: user
+    userState: user,
+    usersState: users,
 })
 
 export default Reducers

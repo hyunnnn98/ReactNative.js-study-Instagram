@@ -16,6 +16,7 @@ const EmptyScreen = () => {
     return (null)
 }
 
+// TODO 함수형 컴포넌트로 변경하기.
 export class Main extends Component {
     componentDidMount() {
         this.props.fetchUser();
